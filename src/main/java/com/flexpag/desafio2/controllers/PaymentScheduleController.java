@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class PaymentScheduleController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<PaymentScheduleDto> save(@RequestBody PaymentScheduleForm form,
+    public ResponseEntity<PaymentScheduleDto> save(@RequestBody @Valid PaymentScheduleForm form,
                                                    UriComponentsBuilder uriBuilder) {
         return service.save(form, uriBuilder);
     }
@@ -40,7 +41,7 @@ public class PaymentScheduleController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<PaymentScheduleDto> update(@PathVariable Long id,
-                                                     @RequestBody PaymentScheduleForm form) {
+                                                     @RequestBody @Valid PaymentScheduleForm form) {
         return service.update(id, form);
     }
 
