@@ -1,6 +1,6 @@
 package com.flexpag.desafio2.controllers;
 
-import com.flexpag.desafio2.models.PaymentSchedule;
+import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
 import com.flexpag.desafio2.services.PaymentScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class PaymentScheduleController {
     private PaymentScheduleService service;
 
     @GetMapping
-    public List<PaymentSchedule> list () {
+    public List<PaymentScheduleDto> list () {
         return service.findAll();
     }
 }
