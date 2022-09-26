@@ -17,4 +17,5 @@ public class PaymentScheduleForm {
     public static PaymentSchedule converter(PaymentScheduleForm form) {
         return new PaymentSchedule(form.getPaymentDate(), form.getPayment(), form.getDescription());
     }
+
 }

@@ -34,12 +34,18 @@ public class PaymentScheduleController {
     @Transactional
     public ResponseEntity<PaymentScheduleDto> save(@RequestBody PaymentScheduleForm form,
                                                    UriComponentsBuilder uriBuilder) {
-        PaymentSchedule payment = service.save(form);
-        URI uri = uriBuilder.path("/payments/{id}").buildAndExpand(payment.getId()).toUri();
-        return ResponseEntity.created(uri).body(new PaymentScheduleDto(payment));
+        return service.save(form, uriBuilder);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<PaymentScheduleDto> update(@PathVariable Long id,
+                                                     @RequestBody PaymentScheduleForm form) {
+        return service.update(id, form);
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return service.delete(id);
     }

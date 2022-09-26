@@ -7,7 +7,9 @@ import com.flexpag.desafio2.repositories.PaymentScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +29,23 @@ public class PaymentScheduleService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public PaymentSchedule save(PaymentScheduleForm form) {
-        return repository.save(PaymentScheduleForm.converter(form));
+    public ResponseEntity<PaymentScheduleDto> save(PaymentScheduleForm form,
+                                                   UriComponentsBuilder uriBuilder) {
+        PaymentSchedule payment = repository.save(PaymentScheduleForm.converter(form));
+        URI uri = uriBuilder.path("/payments/{id}").buildAndExpand(payment.getId()).toUri();
+        return ResponseEntity.created(uri).body(new PaymentScheduleDto(payment));
+    }
+
+    public ResponseEntity<PaymentScheduleDto> update(Long id, PaymentScheduleForm form) {
+        Optional<PaymentSchedule> optionalPayment = repository.findById(id);
+        if (optionalPayment.isPresent()) {
+            PaymentSchedule paymentSchedule = optionalPayment.get();
+            paymentSchedule.setPaymentDate(form.getPaymentDate());
+            paymentSchedule.setPayment(form.getPayment());
+            paymentSchedule.setDescription(form.getDescription());
+            return ResponseEntity.ok().body(PaymentScheduleDto.converter(paymentSchedule));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<?> delete(Long id) {
