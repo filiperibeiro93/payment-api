@@ -2,6 +2,7 @@ package com.flexpag.desafio2.services;
 
 import com.flexpag.desafio2.models.PaymentSchedule;
 import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
+import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
 import com.flexpag.desafio2.repositories.PaymentScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,9 @@ public class PaymentScheduleService {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
         return optionalPayment.map(paymentSchedule -> ResponseEntity.ok().body(PaymentScheduleDto.converter(paymentSchedule)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public PaymentSchedule save(PaymentScheduleForm form) {
+        return repository.save(PaymentScheduleForm.converter(form));
     }
 }
