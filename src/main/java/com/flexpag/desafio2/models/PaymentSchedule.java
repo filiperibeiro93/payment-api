@@ -29,6 +29,12 @@ public class PaymentSchedule implements Serializable {
     public PaymentSchedule() {
     }
 
+    public PaymentSchedule(LocalDateTime paymentDate, Double payment, String description) {
+        this.paymentDate = paymentDate;
+        this.payment = payment;
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

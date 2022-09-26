@@ -23,4 +23,8 @@ public class PaymentScheduleDto {
     public static List<PaymentScheduleDto> converter(List<PaymentSchedule> list) {
         return list.stream().map(PaymentScheduleDto::new).toList();
     }
+
+    public static PaymentScheduleDto converter(PaymentSchedule paymentSchedule) {
+        return new PaymentScheduleDto(paymentSchedule);
+    }
 }
