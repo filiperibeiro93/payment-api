@@ -30,4 +30,14 @@ public class PaymentScheduleService {
     public PaymentSchedule save(PaymentScheduleForm form) {
         return repository.save(PaymentScheduleForm.converter(form));
     }
+
+    public ResponseEntity<?> delete(Long id) {
+        Optional<PaymentSchedule> optionalPayment = repository.findById(id);
+        if (optionalPayment.isPresent()) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

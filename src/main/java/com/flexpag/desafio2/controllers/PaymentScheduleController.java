@@ -38,4 +38,9 @@ public class PaymentScheduleController {
         URI uri = uriBuilder.path("/payments/{id}").buildAndExpand(payment.getId()).toUri();
         return ResponseEntity.created(uri).body(new PaymentScheduleDto(payment));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return service.delete(id);
+    }
 }
