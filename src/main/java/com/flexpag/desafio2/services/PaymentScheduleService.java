@@ -7,8 +7,13 @@ import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
 import com.flexpag.desafio2.models.forms.UpdatePaymentForm;
 import com.flexpag.desafio2.repositories.PaymentScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -22,7 +27,7 @@ public class PaymentScheduleService {
     @Autowired
     private PaymentScheduleRepository repository;
 
-    public List<PaymentScheduleDto> findAll() {
+    public Page<PaymentScheduleDto> findAll(Pageable pagination) {
 
         repository.findAll().forEach(p -> {
             if (!dateValid(p.getPaymentDate())) {
@@ -31,7 +36,18 @@ public class PaymentScheduleService {
             }
         });
 
-        return PaymentScheduleDto.converter(repository.findAll());
+        return PaymentScheduleDto.converter(repository.findAll(pagination));
+    }
+
+    public Page<PaymentScheduleDto> findByPaymentStatus(PaymentStatus status, Pageable pagination) {
+
+        repository.findAll().forEach(p -> {
+            if (!dateValid(p.getPaymentDate())) {
+                p.setPaymentStatus(PaymentStatus.PAID);
+                repository.save(p);
+            }
+        });
+        return PaymentScheduleDto.converter(repository.findByPaymentStatus(status, pagination));
     }
 
     public ResponseEntity<PaymentScheduleDto> findById(Long id) {
