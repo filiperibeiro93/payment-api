@@ -4,6 +4,7 @@ import com.flexpag.desafio2.models.PaymentSchedule;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 public class PaymentScheduleForm {
 
     @NotNull
+    @Future
     private LocalDateTime paymentDate;
     @NotNull
     private Double payment;

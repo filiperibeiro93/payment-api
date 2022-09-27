@@ -1,6 +1,5 @@
 package com.flexpag.desafio2.controllers;
 
-import com.flexpag.desafio2.models.PaymentSchedule;
 import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
 import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
 import com.flexpag.desafio2.services.PaymentScheduleService;
@@ -11,7 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
