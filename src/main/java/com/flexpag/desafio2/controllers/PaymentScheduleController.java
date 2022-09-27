@@ -2,7 +2,6 @@ package com.flexpag.desafio2.controllers;
 
 import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
 import com.flexpag.desafio2.models.enums.PaymentStatus;
-import com.flexpag.desafio2.models.forms.PaymentForm;
 import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
 import com.flexpag.desafio2.models.forms.UpdatePaymentForm;
 import com.flexpag.desafio2.services.PaymentScheduleService;
@@ -19,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/payments")
@@ -31,13 +29,12 @@ public class PaymentScheduleController {
     @GetMapping
     @Cacheable(value = "paymentList")
     public Page<PaymentScheduleDto> list (@RequestParam(required = false) PaymentStatus paymentStatus,
-                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 5)
+                                          @PageableDefault(sort = "id", direction = Sort.Direction.ASC, page = 0, size = 5)
                                           Pageable pagination) {
         if (paymentStatus == null) {
             return service.findAll(pagination);
         }
         return service.findByPaymentStatus(paymentStatus, pagination);
-
     }
 
     @GetMapping("/{id}")

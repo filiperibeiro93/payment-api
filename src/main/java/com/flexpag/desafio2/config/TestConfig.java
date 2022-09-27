@@ -27,7 +27,21 @@ public class TestConfig implements CommandLineRunner {
                 "referente à compesa");
         PaymentSchedule p3 = new PaymentSchedule(LocalDateTime.parse("2022-09-28 10:00", formatter), 435.0,
                 "referente ao detran");
+        PaymentSchedule p4 = new PaymentSchedule(LocalDateTime.parse("2022-05-28 07:00", formatter), 600.5,
+                "qualquer texto");
+        PaymentSchedule p5 = new PaymentSchedule(LocalDateTime.parse("2022-04-28 10:30", formatter), 350.0,
+                "");
+        PaymentSchedule p6 = new PaymentSchedule(LocalDateTime.parse("2022-11-28 10:00", formatter), 812.0,
+                "celpe");
+        PaymentSchedule p7 = new PaymentSchedule(LocalDateTime.parse("2022-12-28 10:00", formatter), 122.0,
+                "teste");
+        PaymentSchedule p8 = new PaymentSchedule(LocalDateTime.parse("2022-03-28 10:00", formatter), 573.0,
+                "aqui um texto pra preencher espaço");
+        PaymentSchedule p9 = new PaymentSchedule(LocalDateTime.parse("2022-03-28 10:00", formatter), 573.0,
+                "aqui um texto pra preencher espaço");
+        PaymentSchedule p10 = new PaymentSchedule(LocalDateTime.parse("2022-03-28 10:00", formatter), 573.0,
+                "aqui um texto pra preencher espaço");
 
-        repository.saveAll(Arrays.asList(p1, p2, p3));
+        repository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10));
     }
 }
