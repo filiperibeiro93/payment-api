@@ -4,6 +4,7 @@ import com.flexpag.desafio2.models.PaymentSchedule;
 import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
 import com.flexpag.desafio2.models.enums.PaymentStatus;
 import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
+import com.flexpag.desafio2.models.forms.UpdatePaymentForm;
 import com.flexpag.desafio2.repositories.PaymentScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,22 +51,32 @@ public class PaymentScheduleService {
         return ResponseEntity.created(uri).body(new PaymentScheduleDto(payment));
     }
 
-    public ResponseEntity<PaymentScheduleDto> update(Long id, PaymentScheduleForm form) {
+    public ResponseEntity<PaymentScheduleDto> update(Long id, UpdatePaymentForm form) {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
-        if (optionalPayment.isPresent()) {
+
+        if (optionalPayment.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!dateValid(optionalPayment.get().getPaymentDate())) {
+            optionalPayment.get().setPaymentStatus(PaymentStatus.PAID);
+            repository.save(optionalPayment.get());
+            return ResponseEntity.badRequest().build();
+        }
+        optionalPayment.get().setPaymentDate(form.getPaymentDate());;
+        return ResponseEntity.ok().body(PaymentScheduleDto.converter(optionalPayment.get()));
+    }
+
+        /*if (optionalPayment.isPresent()) {
             if (!dateValid(optionalPayment.get().getPaymentDate())) {
                 optionalPayment.get().setPaymentStatus(PaymentStatus.PAID);
                 repository.save(optionalPayment.get());
                 return ResponseEntity.badRequest().build();
             }
-            PaymentSchedule paymentSchedule = optionalPayment.get();
-            paymentSchedule.setPaymentDate(form.getPaymentDate());
-            paymentSchedule.setPayment(form.getPayment());
-            paymentSchedule.setDescription(form.getDescription());
-            return ResponseEntity.ok().body(PaymentScheduleDto.converter(paymentSchedule));
+            optionalPayment.get().setPaymentDate(form.getPaymentDate());;
+            return ResponseEntity.ok().body(PaymentScheduleDto.converter(optionalPayment.get()));
         }
         return ResponseEntity.notFound().build();
-    }
+    }*/
 
     public ResponseEntity<?> delete(Long id) {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);

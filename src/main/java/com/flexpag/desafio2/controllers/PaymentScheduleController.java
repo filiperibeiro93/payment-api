@@ -1,7 +1,9 @@
 package com.flexpag.desafio2.controllers;
 
 import com.flexpag.desafio2.models.dtos.PaymentScheduleDto;
+import com.flexpag.desafio2.models.forms.PaymentForm;
 import com.flexpag.desafio2.models.forms.PaymentScheduleForm;
+import com.flexpag.desafio2.models.forms.UpdatePaymentForm;
 import com.flexpag.desafio2.services.PaymentScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,7 @@ public class PaymentScheduleController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<PaymentScheduleDto> update(@PathVariable Long id,
-                                                     @RequestBody @Valid PaymentScheduleForm form) {
+                                                     @RequestBody @Valid UpdatePaymentForm form) {
         return service.update(id, form);
     }
 

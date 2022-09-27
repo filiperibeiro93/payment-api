@@ -4,17 +4,14 @@ import com.flexpag.desafio2.models.PaymentSchedule;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
-public class PaymentScheduleForm {
+public class PaymentScheduleForm extends PaymentForm {
 
-    @NotNull
-    @Future
-    private LocalDateTime paymentDate;
+
     @NotNull
     private Double payment;
     private String description;
