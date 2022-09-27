@@ -19,19 +19,19 @@ public class PaymentSchedule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone="GMT-3")
     private LocalDateTime paymentDate;
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
-    private Double payment;
+    private PaymentStatus status = PaymentStatus.PENDING;
+    private Double paymentValue;
     private String description;
 
     public PaymentSchedule() {
     }
 
-    public PaymentSchedule(LocalDateTime paymentDate, Double payment, String description) {
+    public PaymentSchedule(LocalDateTime paymentDate, Double paymentValue, String description) {
         this.paymentDate = paymentDate;
-        this.payment = payment;
+        this.paymentValue = paymentValue;
         this.description = description;
     }
 
@@ -40,11 +40,11 @@ public class PaymentSchedule implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentSchedule that = (PaymentSchedule) o;
-        return id.equals(that.id) && paymentDate.equals(that.paymentDate) && payment.equals(that.payment);
+        return id.equals(that.id) && paymentDate.equals(that.paymentDate) && paymentValue.equals(that.paymentValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, paymentDate, payment);
+        return Objects.hash(id, paymentDate, paymentValue);
     }
 }

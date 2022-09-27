@@ -13,12 +13,12 @@ public class PaymentScheduleDto {
 
     private Long id;
     private LocalDateTime paymentDate;
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
 
     public PaymentScheduleDto(PaymentSchedule paymentSchedule) {
         this.id = paymentSchedule.getId();
         this.paymentDate = paymentSchedule.getPaymentDate();
-        this.paymentStatus = paymentSchedule.getPaymentStatus();
+        this.status = paymentSchedule.getStatus();
     }
 
     public static Page<PaymentScheduleDto> converter(Page<PaymentSchedule> list) {

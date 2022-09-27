@@ -28,7 +28,7 @@ public class PaymentScheduleService {
 
         repository.findAll().forEach(p -> {
             if (!dateValid(p.getPaymentDate())) {
-                p.setPaymentStatus(PaymentStatus.PAID);
+                p.setStatus(PaymentStatus.PAID);
                 repository.save(p);
             }
         });
@@ -36,25 +36,24 @@ public class PaymentScheduleService {
         return PaymentScheduleDto.converter(repository.findAll(pagination));
     }
 
-    public Page<PaymentScheduleDto> findByPaymentStatus(PaymentStatus status, Pageable pagination) {
+    public Page<PaymentScheduleDto> findByStatus(PaymentStatus status, Pageable pagination) {
 
         repository.findAll().forEach(p -> {
             if (!dateValid(p.getPaymentDate())) {
-                p.setPaymentStatus(PaymentStatus.PAID);
+                p.setStatus(PaymentStatus.PAID);
                 repository.save(p);
             }
         });
-        return PaymentScheduleDto.converter(repository.findByPaymentStatus(status, pagination));
+        return PaymentScheduleDto.converter(repository.findByStatus(status, pagination));
     }
 
     public ResponseEntity<PaymentScheduleDto> findById(Long id) {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
-        if (optionalPayment.isPresent() && !dateValid(optionalPayment.get().getPaymentDate())) {
-            optionalPayment.get().setPaymentStatus(PaymentStatus.PAID);
+        if (!dateValid(optionalPayment.get().getPaymentDate())) {
+            optionalPayment.get().setStatus(PaymentStatus.PAID);
             repository.save(optionalPayment.get());
         }
-        return optionalPayment.map(paymentSchedule -> ResponseEntity.ok().body(PaymentScheduleDto.converter(paymentSchedule)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok().body(PaymentScheduleDto.converter(optionalPayment.get()));
     }
 
     public ResponseEntity<PaymentScheduleDto> save(PaymentScheduleForm form,
@@ -66,42 +65,26 @@ public class PaymentScheduleService {
 
     public ResponseEntity<PaymentScheduleDto> update(Long id, UpdatePaymentForm form) {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
-
-        if (optionalPayment.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         if (!dateValid(optionalPayment.get().getPaymentDate())) {
-            optionalPayment.get().setPaymentStatus(PaymentStatus.PAID);
+            optionalPayment.get().setStatus(PaymentStatus.PAID);
             repository.save(optionalPayment.get());
             return ResponseEntity.badRequest().build();
+        } else if (form.getPaymentDate().isAfter(optionalPayment.get().getPaymentDate())) {
+            return ResponseEntity.badRequest().build();
         }
-        optionalPayment.get().setPaymentDate(form.getPaymentDate());;
+        optionalPayment.get().setPaymentDate(form.getPaymentDate());
         return ResponseEntity.ok().body(PaymentScheduleDto.converter(optionalPayment.get()));
     }
 
-        /*if (optionalPayment.isPresent()) {
-            if (!dateValid(optionalPayment.get().getPaymentDate())) {
-                optionalPayment.get().setPaymentStatus(PaymentStatus.PAID);
-                repository.save(optionalPayment.get());
-                return ResponseEntity.badRequest().build();
-            }
-            optionalPayment.get().setPaymentDate(form.getPaymentDate());;
-            return ResponseEntity.ok().body(PaymentScheduleDto.converter(optionalPayment.get()));
-        }
-        return ResponseEntity.notFound().build();
-    }*/
-
     public ResponseEntity<?> delete(Long id) {
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
-        if (optionalPayment.isPresent()) {
-            if (dateValid(optionalPayment.get().getPaymentDate())) {
-                repository.deleteById(id);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.badRequest().build();
+        if (dateValid(optionalPayment.get().getPaymentDate())) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
+
 
     public static boolean dateValid(LocalDateTime date) {
         return date.isAfter(LocalDateTime.now());

@@ -34,7 +34,7 @@ public class PaymentScheduleController {
         if (paymentStatus == null) {
             return service.findAll(pagination);
         }
-        return service.findByPaymentStatus(paymentStatus, pagination);
+        return service.findByStatus(paymentStatus, pagination);
     }
 
     @GetMapping("/{id}")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ValidationErrorHandler {
@@ -30,5 +31,11 @@ public class ValidationErrorHandler {
             dto.add(error);
         });
         return dto;
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public FormErrorDto handle(NoSuchElementException exception) {
+        return new FormErrorDto(null, "Elemento não encontrado");
     }
 }
