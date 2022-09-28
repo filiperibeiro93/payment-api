@@ -1,5 +1,6 @@
 package com.flexpag.desafio2.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfigurations {
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -38,4 +42,5 @@ public class SecurityConfigurations {
 
         return http.build();
     }
+
 }

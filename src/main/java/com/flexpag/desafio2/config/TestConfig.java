@@ -1,7 +1,9 @@
 package com.flexpag.desafio2.config;
 
 import com.flexpag.desafio2.models.PaymentSchedule;
+import com.flexpag.desafio2.models.User;
 import com.flexpag.desafio2.repositories.PaymentScheduleRepository;
+import com.flexpag.desafio2.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,10 @@ import java.util.Arrays;
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
-    private PaymentScheduleRepository repository;
+    private PaymentScheduleRepository paymentScheduleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -42,6 +47,10 @@ public class TestConfig implements CommandLineRunner {
         PaymentSchedule p10 = new PaymentSchedule(LocalDateTime.parse("2022-03-28 10:00", formatter), 573.0,
                 "aqui um texto pra preencher espaço");
 
-        repository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10));
+        paymentScheduleRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10));
+
+        User u1 = new User("Filipe", "filipe@email.com", "$2a$10$PyPuiUdyNKzjHgyl75gNtO2s/HFqWf300h9bKgvOQySR4aroqybc2");
+
+        userRepository.save(u1);
     }
 }
