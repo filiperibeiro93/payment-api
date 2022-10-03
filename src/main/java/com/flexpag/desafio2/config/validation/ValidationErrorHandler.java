@@ -1,5 +1,6 @@
 package com.flexpag.desafio2.config.validation;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -36,6 +37,13 @@ public class ValidationErrorHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public FormErrorDto handle(NoSuchElementException exception) {
-        return new FormErrorDto(null, "Elemento não encontrado");
+        return new FormErrorDto(null, "Objeto não encontrado");
     }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidFormatException.class)
+    public FormErrorDto handle(InvalidFormatException exception) {
+        return new FormErrorDto(null, "Formato inválido");
+    }
+
 }

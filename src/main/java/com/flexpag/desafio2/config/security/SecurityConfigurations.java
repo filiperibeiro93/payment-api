@@ -41,6 +41,7 @@ public class SecurityConfigurations {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/payments").permitAll()
                 .antMatchers(HttpMethod.GET, "/payments/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
