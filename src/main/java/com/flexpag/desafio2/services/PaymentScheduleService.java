@@ -64,6 +64,9 @@ public class PaymentScheduleService {
     }
 
     public ResponseEntity<PaymentScheduleDto> update(Long id, UpdatePaymentForm form) {
+
+        var payment = repository.findById(id).orElseThrow();
+
         Optional<PaymentSchedule> optionalPayment = repository.findById(id);
         if (!dateValid(optionalPayment.get().getPaymentDate())) {
             optionalPayment.get().setStatus(PaymentStatus.PAID);
